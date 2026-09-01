@@ -1,4 +1,4 @@
-import { Link } from "@tanstack/react-router";
+import { Link } from "react-router-dom";
 import { useSession } from "@/hooks/use-session";
 
 export function SiteHeader() {
@@ -29,14 +29,14 @@ export function SiteHeader() {
         </nav>
         {session ? (
           <Link
-            to="/watchlist"
+            to="/app"
             className="rounded-sm bg-fare px-4 py-2 font-mono text-[12px] font-bold tracking-wide text-background transition-colors hover:bg-foreground"
           >
             Watchlist / 我的清單
           </Link>
         ) : (
           <Link
-            to="/auth"
+            to="/sign-in"
             className="rounded-sm bg-fare px-4 py-2 font-mono text-[12px] font-bold tracking-wide text-background transition-colors hover:bg-foreground"
           >
             Sign in / 登入

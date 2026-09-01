@@ -1,24 +1,6 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { Link } from "react-router-dom";
 import { SiteHeader } from "@/components/site-header";
-
-export const Route = createFileRoute("/")({
-  head: () => ({
-    meta: [
-      { title: "Flight Price Notifier · 機票降價通知 — Fare drop alerts from Taipei" },
-      {
-        name: "description",
-        content:
-          "設定航線與目標價，機票降價就通知你。Set a route from Taipei and a target price — we email you the moment the fare drops.",
-      },
-      { property: "og:title", content: "Flight Price Notifier · 機票降價通知" },
-      {
-        property: "og:description",
-        content: "Set a route and a target price — we email you the moment the fare drops.",
-      },
-    ],
-  }),
-  component: Landing,
-});
+import { usePageMeta } from "@/hooks/use-page-meta";
 
 const routes = [
   { code: "TPE → HND", city: "TOKYO", fare: "NT$6,980", drop: "▼ NT$820" },
@@ -37,7 +19,12 @@ const steps = [
   { n: "03", en: "Get the email", zh: "跌破目標價立刻寄信給你" },
 ];
 
-function Landing() {
+export default function Landing() {
+  usePageMeta(
+    "Flight Price Notifier · 機票降價通知 — Fare drop alerts from Taipei",
+    "設定航線與目標價，機票降價就通知你。Set a route from Taipei and a target price — we email you the moment the fare drops.",
+  );
+
   return (
     <>
       <SiteHeader />
@@ -59,7 +46,7 @@ function Landing() {
             </p>
             <div className="mt-8 flex flex-wrap items-center gap-4">
               <Link
-                to="/auth"
+                to="/sign-in"
                 className="rounded-sm bg-fare px-5 py-3 font-mono text-[13px] font-bold tracking-wide text-background transition-colors hover:bg-foreground"
               >
                 Sign in / 登入
@@ -234,7 +221,7 @@ function Landing() {
               </p>
             </div>
             <Link
-              to="/auth"
+              to="/sign-in"
               className="shrink-0 rounded-sm bg-background px-6 py-4 font-mono text-[13px] font-bold tracking-wide text-fare transition-colors hover:bg-panel-2"
             >
               Sign in / 登入

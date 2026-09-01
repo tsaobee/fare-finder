@@ -1,23 +1,9 @@
 import { useState } from "react";
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { Link, useNavigate } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useSession } from "@/hooks/use-session";
-
-export const Route = createFileRoute("/_authenticated/watchlist")({
-  head: () => ({
-    meta: [
-      { title: "My watchlist · 我的觀望清單 — Flight Price Notifier" },
-      {
-        name: "description",
-        content: "Manage the routes and target prices we watch for you. 管理你追蹤的航線與目標價。",
-      },
-      { property: "og:title", content: "My watchlist · 我的觀望清單" },
-      { property: "og:description", content: "Manage the routes and target prices we watch." },
-    ],
-  }),
-  component: Watchlist,
-});
+import { usePageMeta } from "@/hooks/use-page-meta";
 
 type Watch = {
   id: string;
@@ -39,7 +25,12 @@ const destinations = [
 
 const twd = (n: number) => `NT$${n.toLocaleString("en-US")}`;
 
-function Watchlist() {
+export default function Watchlist() {
+  usePageMeta(
+    "My watchlist · 我的觀望清單 — Flight Price Notifier",
+    "Manage the routes and target prices we watch for you. 管理你追蹤的航線與目標價。",
+  );
+
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { session } = useSession();
@@ -87,7 +78,7 @@ function Watchlist() {
     await queryClient.cancelQueries();
     queryClient.clear();
     await supabase.auth.signOut();
-    navigate({ to: "/auth", replace: true });
+    navigate("/sign-in", { replace: true });
   }
 
   return (
@@ -180,9 +171,7 @@ function Watchlist() {
             <span className="text-right">STATUS</span>
           </div>
 
-          {isLoading && (
-            <p className="px-5 py-6 font-mono text-[11px] text-muted">LOADING…</p>
-          )}
+          {isLoading && <p className="px-5 py-6 font-mono text-[11px] text-muted">LOADING…</p>}
 
           {!isLoading && watches.length === 0 && (
             <p className="px-5 py-6 font-mono text-[11px] text-muted">

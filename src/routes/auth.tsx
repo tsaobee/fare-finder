@@ -1,32 +1,19 @@
 import { useEffect, useState } from "react";
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable/index";
 import { useSession } from "@/hooks/use-session";
+import { usePageMeta } from "@/hooks/use-page-meta";
 
-export const Route = createFileRoute("/auth")({
-  head: () => ({
-    meta: [
-      { title: "Sign in · 登入 — Flight Price Notifier" },
-      {
-        name: "description",
-        content:
-          "Sign in to manage your Taipei fare watches and target prices. 登入管理你的航線與目標價。",
-      },
-      { property: "og:title", content: "Sign in · 登入 — Flight Price Notifier" },
-      {
-        property: "og:description",
-        content: "Sign in to manage your Taipei fare watches and target prices.",
-      },
-    ],
-  }),
-  component: AuthPage,
-});
+export default function AuthPage({ mode: initialMode = "signin" }: { mode?: "signin" | "signup" }) {
+  usePageMeta(
+    "Sign in · 登入 — Flight Price Notifier",
+    "Sign in to manage your Taipei fare watches and target prices. 登入管理你的航線與目標價。",
+  );
 
-function AuthPage() {
   const navigate = useNavigate();
   const { session } = useSession();
-  const [mode, setMode] = useState<"signin" | "signup">("signin");
+  const [mode, setMode] = useState<"signin" | "signup">(initialMode);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);
@@ -34,7 +21,7 @@ function AuthPage() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (session) navigate({ to: "/watchlist", replace: true });
+    if (session) navigate("/app", { replace: true });
   }, [session, navigate]);
 
   async function handleSubmit(e: React.FormEvent) {

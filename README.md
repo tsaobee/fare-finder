@@ -1,28 +1,36 @@
 # Fare Finder
 
-Built a SaaS landing page + authenticated app shell for Flight Price Notifier (機票降價通知), a product that watches popular flight routes from Taipei and emails the user when the cheapest fare drops to or below their target price -targeted at budget-driven travelers who don't care exactly when they fly, they just want a ticket under their budget. 
+A SaaS landing page + authenticated app shell for **Flight Price Notifier (機票降價通知)** — a
+product that watches popular flight routes from Taipei and emails the user when the cheapest
+fare drops to or below their target price. Aimed at budget-driven travelers who don't care
+exactly when they fly, they just want a ticket under their budget.
 
-This site must include: A public landing page (/) with: 
+- Public landing page (`/`) — hero, how it works, popular routes, watchlist preview, CTA.
+- `/sign-in`, `/sign-up` — Supabase email/password + Google OAuth.
+- `/app` — authenticated watchlist (add/remove routes and target prices).
 
-Hero section: product name "Flight Price Notifier" prominently displayed, value prop 「設定航線與目標價，機票降價就通知你」 (English subtitie: "Set a route and a target price - we email you when the fare drops." and a primary CTA button labeled "Sign in/ 登入" in the top-right header.
+## Tech stack
 
-This project was built with [Lovable](https://lovable.dev).
-
-## Build with Lovable
-
-Continue developing this project in the [Lovable editor](https://lovable.dev/projects/d73f4f63-8207-4b50-b339-624cc7aee2a2).
-
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: every change made in Lovable is committed straight to this repository.
-- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
+Plain **Vite + React** single-page app (no SSR). Client-side routing with **React Router**,
+data fetching with **TanStack Query**, styling with **Tailwind CSS v4**, auth + data with
+**Supabase**. The build (`vite build`) emits a static SPA to `dist/`.
 
 ## Development
 
-Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
+Requires Node.js 20+ and npm.
 
 ```sh
-git clone <this-repository-url>
-cd <repository-name>
-npm i
-npm run dev
+npm install
+npm run dev      # http://localhost:5173
+npm run build    # -> dist/
+npm run preview  # serve the production build locally
 ```
+
+Environment variables live in `.env` (`VITE_SUPABASE_URL`, `VITE_SUPABASE_PUBLISHABLE_KEY`,
+`VITE_SUPABASE_PROJECT_ID`) and are inlined at build time.
+
+## Deployment (Vercel)
+
+Static build, no server. `vercel.json` sets the framework preset, `dist/` as the output
+directory, and a SPA fallback rewrite so deep links like `/app` resolve client-side. Set the
+`VITE_SUPABASE_*` variables in the Vercel project settings (or rely on the committed `.env`).
