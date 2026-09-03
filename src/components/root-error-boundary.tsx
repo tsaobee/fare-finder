@@ -1,13 +1,10 @@
 import { Component, type ReactNode } from "react";
 
-import { reportLovableError } from "@/lib/lovable-error-reporting";
-
 type Props = { children: ReactNode };
 type State = { error: Error | null };
 
-// Client-side replacement for the TanStack root `errorComponent`. Same markup and
-// reporting behaviour; "Try again" reloads the SPA instead of calling
-// router.invalidate().
+// Client-side replacement for the TanStack root `errorComponent`. Same markup;
+// "Try again" reloads the SPA instead of calling router.invalidate().
 export class RootErrorBoundary extends Component<Props, State> {
   override state: State = { error: null };
 
@@ -17,7 +14,6 @@ export class RootErrorBoundary extends Component<Props, State> {
 
   override componentDidCatch(error: Error) {
     console.error(error);
-    reportLovableError(error, { boundary: "spa_root_error_boundary" });
   }
 
   override render() {

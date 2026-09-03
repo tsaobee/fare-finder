@@ -26,8 +26,14 @@ npm run build    # -> dist/
 npm run preview  # serve the production build locally
 ```
 
-Environment variables live in `.env` (`VITE_SUPABASE_URL`, `VITE_SUPABASE_PUBLISHABLE_KEY`,
-`VITE_SUPABASE_PROJECT_ID`) and are inlined at build time.
+Environment variables live in `.env` (`VITE_SUPABASE_URL`, `VITE_SUPABASE_PUBLISHABLE_KEY`)
+and are inlined at build time. The `VITE_SUPABASE_PUBLISHABLE_KEY` is Supabase's browser-safe
+publishable key (`sb_publishable_*`) — the current name for what used to be the "anon key".
+
+## Database
+
+The Supabase schema lives in `supabase/migrations/`. Apply it to the project referenced in
+`supabase/config.toml` with `supabase db push` (or paste the SQL into the dashboard SQL editor).
 
 ## Deployment (Vercel)
 

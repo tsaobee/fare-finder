@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
-import { lovable } from "@/integrations/lovable/index";
 import { useSession } from "@/hooks/use-session";
 import { usePageMeta } from "@/hooks/use-page-meta";
 
@@ -48,12 +47,12 @@ export default function AuthPage({ mode: initialMode = "signin" }: { mode?: "sig
 
   async function handleGoogle() {
     setError(null);
-    const result = await lovable.auth.signInWithOAuth("google", {
-      redirect_uri: window.location.origin,
+    const { error: oauthError } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: { redirectTo: window.location.origin },
     });
-    if (result.error) {
-      setError(result.error.message ?? "Google sign-in failed.");
-      return;
+    if (oauthError) {
+      setError(oauthError.message ?? "Google sign-in failed.");
     }
   }
 

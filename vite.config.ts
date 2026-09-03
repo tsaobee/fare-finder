@@ -15,10 +15,4 @@ export default defineConfig({
   build: {
     outDir: "dist",
   },
-  // Some auto-generated integration files reference `process.env` as an SSR
-  // fallback. In a static SPA there is no Node process, so shim it to an empty
-  // object — the `import.meta.env.VITE_*` values are what actually get used.
-  define: {
-    "process.env": {},
-  },
 });
